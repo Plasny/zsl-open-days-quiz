@@ -4,12 +4,18 @@ Program napisany w 4 wieczory z okazji Tygodnia Zawodowców w 2024.
 Był używany aby urozmaicić przedstawianie kierunków w Zespole Szkół Łączności
 i zaaktywizować osoby, które przyszły na prezentacje.
 
+<!-- 
 ![strona dołączania do quizu](./.images/start.png)
 ![zadanie inspirowane lekcjami urządzeń techniki komputerowej](./.images/utk.png)
 ![zadanie inspirowane lekcjami sieci komputerowych](./.images/sieci.png)
 ![zadanie inspirowane lekcjami systemów operacyjnych](./.images/so.png)
 ![zadanie inspirowane lekcjami tworzenia statycznych stron internetowych](./.images/tssi.png)
-![tabela wyników](./.images/scores.png)
+![tabela wyników](./.images/scores.png) 
+-->
+
+<img src="./.images/start.png" alt="strona dołączania do quizu" width="256" hspace="10"/><img src="./.images/utk.png" alt="zadanie inspirowane lekcjami urządzeń techniki komputerowej" width="256" hspace="10"/><img src="./.images/sieci.png" alt="zadanie inspirowane lekcjami sieci komputerowych" width="256" hspace="10"/>
+<img src="./.images/so.png" alt="zadanie inspirowane lekcjami systemów operacyjnych" width="256" hspace="10"/><img src="./.images/tssi.png" alt="zadanie inspirowane lekcjami tworzenia statycznych stron internetowych" width="256" hspace="10"/><img src="./.images/scores.png" alt="tabela wyników" width="256" hspace="10"/>
+
 
 ## Obsługa
 

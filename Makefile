@@ -1,6 +1,7 @@
 tunnel_name := DEMO-$(shell date +%Y-%m-%d)
-dns := demo.plasny.one
+dns := $(or $(DNS_NAME), demo.example.com)
 app_name := zsl-demo
+port := $(or $(PORT), 8080)
 
 .PHONY: free-tunnel login-tunnel build dev
 
@@ -29,5 +30,5 @@ login-tunnel:
 	cloudflared tunnel login && \
 	cloudflared tunnel create $(tunnel_name) && \
 	cloudflared tunnel route dns --overwrite-dns $(tunnel_name) $(dns) && \
-	cloudflared tunnel run --url http://localhost:8080 $(tunnel_name)
+	cloudflared tunnel run --url http://localhost:$(port) $(tunnel_name)
 

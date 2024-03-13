@@ -1,0 +1,30 @@
+package components
+
+import "fmt"
+
+templ Base(elements bool, id int64, child templ.Component) {
+	<!DOCTYPE html>
+	<html lang="pl">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <meta name="description" content="Tydzień Zawodowców w Zespole Szkół Łączności to doskonała okazja dla uczniów, aby zobaczyć zalety szkół technicznych i zorientować się w jakim kierunku chcą dalej podążyć. Zachęcamy wszystkich zainteresowanych do udziału w tym ekscytującym wydarzeniu i rozważenia kierunku Technik Informatyk jako swojej drogi edukacyjnej i zawodowej."/>
+            <meta name="keywords" content="technik informatyk, informatyka, kierunek techniczny, programowanie, sieci komputerowe, administracja komputerami i sieciami, grafika komputerowa"/>
+            <meta name="author" content="Paweł Pasternak"/>
+			<link href="/assets/style.css" rel="stylesheet"/>
+			<title>Technik Informatyk - Tydzień Zawodowców ZSŁ</title>
+            <script src="/assets/push.js"/>
+		</head>
+		<body class="w-screen h-screen flex flex-col">
+            if elements {
+                <nav class="shrink-0 w-screen h-16 bg-emerald-800">
+                    if id > 0 {
+                        <p class="text-white pl-4 text-2xl leading-[4rem]">#<span id="UserID">{fmt.Sprintf("%03d", id)}</span></p>
+                    }
+                </nav>
+            }
+
+            @child
+        </body>
+	</html>
+}

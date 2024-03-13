@@ -1,0 +1,51 @@
+package components
+
+templ QuestTSSI() {
+    <main class="grow text-center">
+        <h1 class="text-3xl font-bold my-8 mx-4">Dopasuj kolory do ich&nbsp;nazw</h1>
+        <div class="w-full flex justify-center gap-6">
+            <div class="w-32 h-32 bg-[#5FBB9C]" /> 
+            <select id="s1">
+                <option>zielony szmaragdowy</option>
+                <option>szmaragdowy</option>
+                <option>ciemna szmaragdowa zieleń</option>
+            </select>
+        </div>
+        <div class="w-full flex justify-center gap-6">
+            <div class="w-32 h-32 bg-[#50C878]" /> 
+            <select id="s2">
+                <option>zielony szmaragdowy</option>
+                <option>szmaragdowy</option>
+                <option>ciemna szmaragdowa zieleń</option>
+            </select>
+        </div>
+        <div class="w-full flex justify-center gap-6">
+            <div class="w-32 h-32 bg-[#105E26]" /> 
+            <select id="s3">
+                <option>zielony szmaragdowy</option>
+                <option>szmaragdowy</option>
+                <option>ciemna szmaragdowa zieleń</option>
+            </select>
+        </div>
+        <script>
+            function check() {
+                const s1 = document.getElementById("s1")
+                const s2 = document.getElementById("s2")
+                const s3 = document.getElementById("s3")
+
+                if (s1.selectedIndex == 0 
+                    && s2.selectedIndex == 1 
+                    && s3.selectedIndex == 2) {
+                    sendTime("tssi")
+                } else {
+                    if (event.target.innerText == "Spróbuj ponownie") {
+                        event.target.innerText = "Spróbuj jeszcze raz"
+                    } else {
+                        event.target.innerText = "Spróbuj ponownie"
+                    }
+                }
+            }
+        </script>
+        <button class="w-4/5 sm:w-96 mt-12 bg-emerald-800 text-white p-4 rounded-md" onclick="check()">Zatwierdź</button>
+    </main>
+}

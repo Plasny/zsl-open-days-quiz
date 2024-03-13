@@ -1,0 +1,43 @@
+package components
+
+import "zsl-demo/model"
+import "fmt"
+
+templ Scores(arr []model.GetAllTotalTimesRow, id int64) {
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Nazwa/ID</th>
+                <th>Czas</th>
+                <th>Zadania</th>
+            </tr>
+        </thead>
+        <tbody>
+        for idx, el := range arr {
+            <tr
+                if id == el.UserID {
+                    class="bg-emerald-800 text-white text-center"
+                } else {
+                    class="text-center"
+                }
+            >
+                <td>{fmt.Sprint(idx + 1)}</td>
+                <td
+                    if el.Name.Valid {
+                        title={fmt.Sprintf("#%03d", el.UserID)}
+                    }
+                >
+                if el.Name.Valid {
+                    {el.Name.String}
+                } else {
+                    #{fmt.Sprintf("%03d", el.UserID)}
+                }
+                </td>
+                <td>{fmt.Sprint(el.TotalTime.Float64)} ms</td>
+                <td>{fmt.Sprint(el.QuestsDone)}</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

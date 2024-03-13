@@ -1,0 +1,9 @@
+version: "2"
+sql:
+  - engine: "sqlite"
+    queries: "model/queries.sql"
+    schema: "model/schema.sql"
+    gen:
+      go:
+        package: "model"
+        out: "model"

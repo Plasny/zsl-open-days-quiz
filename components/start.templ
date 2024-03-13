@@ -1,0 +1,26 @@
+package components
+
+templ Start() {
+	<main class="grow flex flex-col justify-center">
+		<form class="border-emerald-800 p-4 sm:border-2 rounded-xl mx-2 sm:m-auto sm:w-80 bg-white/30 backdrop-blur" method="POST" action="/api/users">
+			<h1 class="text-3xl text-center my-2">Coś ala QUIZ</h1>
+			<p class="text-sm text-center my-2">Działa tylko na urządzeniach obsługujących&nbsp;dotyk</p>
+			<div>
+				<label for="username" class="block text-sm font-medium leading-6 text-gray-900">Nazwa</label>
+				<div class="mt-2">
+					<input
+						id="username"
+						name="username"
+						type="text"
+						placeholder="Radosny Słonecznik"
+						class="block w-full rounded-xl border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-800 sm:leading-6 caret-emerald-800"
+					/>
+				</div>
+			</div>
+			<button class="m-auto block mt-4 py-3 px-4 w-1/2 bg-emerald-800 text-white rounded-xl">Dołącz</button>
+		</form>
+		<div class="-z-10 absolute bottom-0 right-0">
+			@svgWheel()
+		</div>
+	</main>
+}

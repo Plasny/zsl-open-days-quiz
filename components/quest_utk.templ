@@ -1,0 +1,177 @@
+package components
+
+// drag and drop to correct place in motherboard
+templ QuestUTK() {
+	<main class="grow flex flex-col">
+		<script type="module">
+            const elTable = [
+                {
+                    name: "Procesor",
+                    id: "processor",
+                    size: {width: 500, height: 500, angle: 90},
+                    calculatedSize: {},
+                    corner: {x: 2000, y: 1140},
+                    calculatedCorner: {},
+                },
+                {
+                    name: "Pamięć RAM",
+                    id: "ram",
+                    size: {width: 1300, height: 350, angle: 0},
+                    corner: {x: 1560, y: 1860}
+                },
+                {
+                    name: "Karta Graficzna",
+                    id: "gpu",
+                    size: {width: 2000, height: 500, angle: 90},
+                    corner: {x: 1025, y: 270}
+                },
+            ]
+            let current = 0;
+
+            const motherboardEl = document.getElementById("motherboard")
+            motherboardEl.addEventListener("load", loaded)
+
+            const nameEl = document.getElementById("element-name")
+
+            function loaded() {
+                const resizeFactor = motherboardEl.height / motherboardEl.naturalHeight
+                // console.log(motherboardEl, resizeFactor, motherboardEl.height, motherboardEl.naturalHeight)
+
+                function calculateSize({width, height, ...other}) {
+                    width = Math.floor(width * resizeFactor)
+                    height = Math.floor(height * resizeFactor)
+
+                    return {width, height, ...other} 
+                }
+
+                function calculateMotherboardPos({x, y}, {width, height, angle}) {
+                    x = Math.floor(x * resizeFactor)
+                    x += motherboardEl.offsetLeft
+
+                    y = Math.floor(y * resizeFactor)
+                    y += motherboardEl.offsetTop
+
+                    if (angle == 90) {
+                        let tmp = width
+                        width = height
+                        height = tmp
+                    }
+
+                    return {x, y, width, height}
+                }
+
+                for (const obj of elTable) {
+                    obj.calculatedSize = calculateSize(obj.size)
+                    obj.calculatedCorner = calculateMotherboardPos(obj.corner, obj.calculatedSize)
+
+                    // testing
+                    /* const n = document.createElement("div")
+                    n.style.position = "absolute"
+                    n.style.top = obj.calculatedCorner.y + "px"
+                    n.style.left = obj.calculatedCorner.x + "px"
+                    n.style.width = obj.calculatedCorner.width + "px"
+                    n.style.height = obj.calculatedCorner.height + "px"
+                    n.style.border = "2px solid red"
+                    document.body.append(n) */
+
+                    const el = document.getElementById(obj.id)
+                    const setElPosition = ({clientX, clientY}) => {
+                        el.style.setProperty("left", `${clientX - obj.calculatedSize.width / 2}px`)
+                        el.style.setProperty("top", `${clientY - obj.calculatedSize.height / 2}px`)
+                    }
+
+                    const startListener = e => {
+                        el.style.setProperty("width", obj.calculatedSize.width + "px")
+                        el.style.setProperty("transform", `rotate(${obj.size.angle}deg)`)
+                        el.style.setProperty("position", "absolute")
+                        setElPosition(e.changedTouches[0])
+                    }
+
+                    const moveListener = e => setElPosition(e.changedTouches[0])
+
+                    const endListener = e => {
+                        if (
+                            e.changedTouches[0].clientX > obj.calculatedCorner.x
+                            && e.changedTouches[0].clientY > obj.calculatedCorner.y
+                            && e.changedTouches[0].clientX < obj.calculatedCorner.x + obj.calculatedCorner.width
+                            && e.changedTouches[0].clientY < obj.calculatedCorner.y + obj.calculatedCorner.height
+                        ) {
+                            console.log(obj.calculatedCorner, e.changedTouches[0])
+                            el.style.setProperty("left", `${obj.calculatedCorner.x}px`)
+                            el.style.setProperty("top", `${obj.calculatedCorner.y}px`)
+
+                            if (obj.size.angle == 90) {
+                                el.style.transform += `translate(${Math.abs(obj.calculatedSize.height - obj.calculatedSize.width) / 4}px, ${Math.abs(obj.calculatedSize.width - obj.calculatedSize.height) / 4}px)`
+                            }
+
+                            el.removeEventListener("touchstart", startListener)
+                            el.removeEventListener("touchmove", moveListener)
+                            el.removeEventListener("touchend", endListener)
+
+                            current++
+                            if (current >= elTable.length) {
+                                nameEl.innerText = "Dobra robota :)"
+                                console.log("next task")
+                                sendTime("utk")
+                                return
+                            }
+
+                            nameEl.innerText = elTable[current].name
+                            const nextEl = document.getElementById(elTable[current].id)
+                            nextEl.classList.remove("hidden")
+                        } else {
+                            // console.log(e.changedTouches[0])
+                            el.style.removeProperty("width")
+                            el.style.removeProperty("transform")
+                            el.style.removeProperty("position")
+                        }
+                    }
+
+                    el.addEventListener("touchstart", startListener)
+                    el.addEventListener("touchmove", moveListener)
+                    el.addEventListener("touchend", endListener)
+
+                    console.log(obj)
+                }
+            }
+        </script>
+		<h1 class="mt-4 text-center text-2xl font-bold">Zamontuj kolejne komponenty na&nbsp;płycie&nbsp;głównej</h1>
+		<p class="text-center text-sm">To to coś poniżej</p>
+        <div class="grow flex flex-col md:flex-row">
+            <div class="md:w-2/3 flex">
+		        <img 
+                    class="m-auto"
+                    id="motherboard" 
+                    alt="Płyta główna" 
+                    src="/assets/motherboard.webp"
+                />
+            </div>
+		    <div class="border-2 border-emerald-800 grow flex flex-col">
+		    	<h2 class="mt-2 text-center text-xl" id="element-name">Processor</h2>
+		    	<div class="grow flex items-center justify-center">
+		    		<img
+		    			id="processor"
+		    			class="max-w-[80%] max-h-[80%]"
+		    			alt="Procesor"
+		    			src="/assets/procesor.webp"
+		    			draggable="true"
+		    		/>
+		    		<img
+		    			id="ram"
+		    			class="max-w-[80%] max-h-[80%] hidden"
+		    			alt="Pamięć RAM"
+		    			src="/assets/ram.webp"
+		    			draggable="true"
+		    		/>
+		    		<img
+		    			id="gpu"
+		    			class="max-w-[80%] max-h-[80%] hidden"
+		    			alt="Karta graficzna"
+		    			src="/assets/gpu.webp"
+		    			draggable="true"
+		    		/>
+		    	</div>
+		    </div>
+        </div>
+	</main>
+}

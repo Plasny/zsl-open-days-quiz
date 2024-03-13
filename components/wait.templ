@@ -1,0 +1,24 @@
+package components
+
+templ Wait() {
+    <main class="grow text-center">
+        <script>
+            window.addEventListener("load", () => {
+                console.log("loaded")
+
+                const id = parseInt(document.getElementById("UserID").innerText)
+
+                const eventSource = new EventSource("/wait/push");
+                eventSource.addEventListener("message", e => {
+                    const eventData = e.data;
+                    console.log("Received data:", eventData);
+
+                    if (eventData)
+                        window.location.href = eventData + "?id=" + id
+                });
+            })
+        </script>
+        <h1 class="text-3xl font-bold">Oczekiwanie na pozostałych graczy</h1>
+        <p>Jeśli masz jakieś pytanie, zadaj je :)</p>
+    </main>
+}

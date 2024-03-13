@@ -1,0 +1,133 @@
+package components
+
+templ QuestSieci() {
+	<main class="grow">
+		<h1 class="text-2xl font-bold text-center my-8">
+			Połącz laptopy Alicji i&nbsp;Piotra ze&nbsp;sobą
+		</h1>
+		<canvas id="canvas" class="mt-4 mx-auto border border-black w-4/5 touch-none"></canvas>
+        <img id="laptop-svg" class="hidden" src="/assets/laptop.svg" width="100" height="100" />
+		<script type="module">
+            const c = document.getElementById("canvas")
+            const img = document.getElementById("laptop-svg")
+
+            const width = Math.round(window.screen.width * 0.8)
+            c.width = width
+            c.height = width 
+
+            const ctx = c.getContext("2d")
+            const blockSize = Math.round(width / 6)
+
+            const maze = new Path2D()
+
+            maze.moveTo(0, 0)
+            maze.lineTo(c.width, 0)
+            maze.lineTo(c.width, c.height)
+            maze.lineTo(0, c.height)
+            maze.lineTo(0, 0)
+
+            maze.moveTo(0, blockSize)
+            maze.lineTo(c.width - blockSize, blockSize)
+
+            maze.moveTo(0, 2 * blockSize)
+            maze.lineTo(blockSize, 2 * blockSize)
+
+            maze.moveTo(2 * blockSize, 2 * blockSize)
+            maze.lineTo(c.width, 2 * blockSize)
+
+            maze.moveTo(2 * blockSize, 2 * blockSize)
+            maze.lineTo(2 * blockSize, 3 * blockSize)
+            maze.lineTo(blockSize, 3 * blockSize)
+
+            maze.moveTo(blockSize, 5 * blockSize)
+            maze.lineTo(blockSize, 4 * blockSize)
+            maze.lineTo(4 * blockSize, 4 * blockSize)
+            maze.lineTo(4 * blockSize, 3 * blockSize)
+            maze.lineTo(3 * blockSize, 3 * blockSize)
+            maze.lineTo(5 * blockSize, 3 * blockSize)
+
+            maze.moveTo(c.width, 4 * blockSize)
+            maze.lineTo(5 * blockSize, 4 * blockSize)
+
+            maze.moveTo(2 * blockSize, c.height)
+            maze.lineTo(2 * blockSize, 5 * blockSize)
+
+            maze.moveTo(5 * blockSize, c.height)
+            maze.lineTo(5 * blockSize, 5 * blockSize)
+            maze.lineTo(3 * blockSize, 5 * blockSize)
+
+            function draw() {
+                ctx.strokeStyle = "black"
+                ctx.fillStyle = "lime"
+
+                ctx.fillRect(0, 0, blockSize, blockSize)
+                ctx.fillRect(c.width - blockSize, c.height - blockSize, c.width, c.height)
+
+                if (img.complete) {
+                    ctx.drawImage(img, 0, 0, blockSize, blockSize)
+                    ctx.drawImage(img, c.width - blockSize, c.height - blockSize, blockSize, blockSize)
+                } else {
+                    img.onload = () => {
+                        ctx.drawImage(img, 0, 0, blockSize, blockSize)
+                        ctx.drawImage(img, c.width - blockSize, c.height - blockSize, blockSize, blockSize)
+                    }
+                }
+
+                ctx.lineWidth = Math.round(width / 100)
+                ctx.stroke(maze)
+
+                ctx.strokeStyle = "blue"
+            }
+
+            draw()
+
+            let userPath;
+            function toPos({clientX, clientY, ...other}) {
+                let x = (clientX - c.offsetLeft)
+                let y = (clientY - c.offsetTop)
+                return {x, y}
+            }
+            
+            c.addEventListener("touchstart", e => {
+                e.preventDefault()
+                const pos = toPos(e.touches[0])
+
+                if (pos.x < blockSize && pos.y < blockSize) {
+                    userPath = new Path2D()
+                    userPath.moveTo(pos.x, pos.y)
+                } else {
+                    userPath = null
+                }
+            })
+            c.addEventListener("touchmove", e => {
+                e.preventDefault()
+                const pos = toPos(e.touches[0])
+                userPath.lineTo(pos.x, pos.y)
+
+                if (ctx.isPointInStroke(maze, pos.x, pos.y)) {
+                    userPath = null
+                    ctx.clearRect(0, 0, c.width, c.height)
+                    draw()
+                } else {
+                    ctx.stroke(userPath)
+                }
+
+                if (pos.x > c.width - blockSize && pos.y > c.height - blockSize) {
+                    ctx.clearRect(0, 0, c.width, c.height)
+                    console.log("win")
+                    sendTime("sieci")
+                }
+            })
+            c.addEventListener("touchend", e => {
+                e.preventDefault()
+                ctx.clearRect(0, 0, c.width, c.height)
+                draw()
+            })
+            c.addEventListener("touchcancel", e => {
+                e.preventDefault()
+                ctx.clearRect(0, 0, c.width, c.height)
+                draw()
+            })
+        </script>
+	</main>
+}

@@ -1,0 +1,13 @@
+CREATE TABLE users (
+  id   INTEGER PRIMARY KEY,
+  name TEXT UNIQUE
+);
+
+CREATE TABLE times (
+  id   INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  time INTEGER NOT NULL,
+  type TEXT NOT NULL,
+  FOREIGN KEY (user_id)
+    REFERENCES users (id)
+);
